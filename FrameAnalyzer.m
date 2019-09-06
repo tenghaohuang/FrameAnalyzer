@@ -199,6 +199,7 @@ if((strcmp(key_press,'x')||strcmp(key_press,'X'))&&flag_2)
     I=imread(fullfile(frames_path,filename));
     
     SeperateView(I);
+    flag =1;
 end
 if((strcmp(key_press,'s')||strcmp(key_press,'S'))&&flag_2)
     
@@ -264,6 +265,41 @@ if((strcmp(key_press,'r')||strcmp(key_press,'R'))&&flag_2)
     if (canManipulatePts)
        
         pts = reposition(pts); 
+        if not(isempty(h1))
+            delete(h1);
+        end
+        if not(isempty(h0))
+            delete(h0);
+        end
+        x = pts(1, :);
+        y = pts(2, :);
+        hold on;
+    h0 = plot(x, y, 'b-o');
+    hold on;
+
+    % Allocate Memory for curve
+    stepSize = 0.01; % hundreds pts + 1
+    u = 0: stepSize: 1;
+    numOfU = length(u);
+    c = zeros(2, numOfU);
+
+    % Iterate over curve and apply deCasteljau
+    numOfPts = length(x);
+    pts = [x; y];
+    for i = 1: numOfU
+        ui = u(i);
+        c(:, i) = deCasteljau(ui, pts, numOfPts, numOfPts);
+    end
+
+    h1 = plot(c(1, :), c(2, :), '-r');
+    end
+    
+ 
+end
+if((strcmp(key_press,'e')||strcmp(key_press,'E'))&&flag_2)
+    if (canManipulatePts)
+       
+        pts = reposition_e(pts); 
         if not(isempty(h1))
             delete(h1);
         end

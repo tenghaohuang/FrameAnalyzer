@@ -24,16 +24,7 @@ function cPoly = reposition(cPoly)
             i = iX;
             pointSelected = true;
             break;
-        elseif abs(idx_1 - idx_2) == 1            
-            if (idx_1 < idx_2)
-                idx_prev = idx_1;
-                idx_next = idx_2;
-            else
-                idx_prev = idx_2;
-                idx_next = idx_1;
-            end
-            edgeSelected = true;
-            break;
+        
         end
     end
     

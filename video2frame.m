@@ -8,7 +8,7 @@ count = 0;
 for img = 1:a.NumberOfFrames;
     
     progress = img/a.NumberOfFrames;
-    h_w = waitbar(progress,num2str(progress));
+    h_w = waitbar(progress);
     filename=strcat('frame',num2str(img),'.jpg');
     b = read(a, img);
     imwrite(b,fullfile(directName,filename));
