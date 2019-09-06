@@ -77,9 +77,7 @@ set(handles.uitable1, 'Data', {});
 data =zeros();
  
     frames_path = video2frame(filePath,folderPath);
-     %frames_path = '/Users/daniel/Documents/MATLAB/pics';
-msgbox('check the folder you choose!','modal');
-
+   
 frames_num =1;
 filename = strcat('frame',num2str(frames_num),'.jpg');
 set(handles.frame_numbox,'String',num2str(frames_num));
