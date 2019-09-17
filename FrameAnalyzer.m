@@ -60,6 +60,7 @@ filePath = fullfile(folder, baseName)
  
 folderPath = uigetdir();
 global stack
+global listy
 global frames_path;
 global leg_counter;
 global frames_path;
@@ -69,7 +70,8 @@ global flag;
 global flag_;
 global flag_2;
 global frames_num;
-
+stack ={};
+listy = {};
 leg_counter =0;
 frames_num =1;
 counter =0;
@@ -170,11 +172,72 @@ canManipulatePts = false;
 end
 
 function newStack = pushStack(a,newValue)
-newStack = [newValue,a];
+newStack = [a,newValue];
 
 function [newStack,popedValue] = popStack(a)
-popedValue = a(1);
+if(size(a,2)==0)
+    msgbox("Empty stack");
+    return
+end
+popedValue = a{1};
 newStack = a(2:end);
+
+
+function paint(pts)
+hold on;
+   
+    x = pts(1,:);
+    y = pts(2,:);
+    plot(x, y, 'b-o');
+    hold on;
+
+    % Allocate Memory for curve
+    stepSize = 0.01; % hundreds pts + 1
+    u = 0: stepSize: 1;
+    numOfU = length(u);
+    c = zeros(2, numOfU);
+
+    % Iterate over curve and apply deCasteljau
+    numOfPts = length(x);
+
+    for i = 1: numOfU
+        ui = u(i);
+        c(:, i) = deCasteljau(ui, pts, numOfPts, numOfPts);
+    end
+    
+    % Plot curve
+    %axis([0 1 0 1]);
+    plot(c(1, :), c(2, :), '-r');
+ 
+function pushData()
+global counter;
+global leg_counter;
+global data;
+ if(counter ==0)
+        return;
+    end
+counter = counter - 1;
+    leg_counter=leg_counter-1;
+    h = findall(0,'tag','leg_numbox');
+    set(h,'String',num2str(leg_counter));
+    
+    for i = 1:size(data(counter,:),2)
+        data(counter,1) = 0;
+        data(counter,2 )= 0;
+        data(counter,i+2) =0;
+    end
+    
+    counter = counter+1;
+    for i = 1:size(data(counter,:),2)
+        data(counter,1) = 0;
+        data(counter,2 )= 0;
+        data(counter,i+2) =0;
+    end
+    
+    handles_uitable  = findall(0,'tag','uitable1');
+    set(handles_uitable,'data',data);   
+    counter = counter-2;     
+   
 
 function press(hObject, eventdata, handles)
 key_press = get(gcf,'currentKey');
@@ -193,6 +256,7 @@ global counter;
 global h1;
 global h0;
 global stack
+global listy
 h_box = findall(0,'tag','frame_numbox');
 frames_num= str2num(get(h_box,'String'));
 global leg_counter;
@@ -209,17 +273,30 @@ if((strcmp(key_press,'x')||strcmp(key_press,'X'))&&flag_2)
     flag =1;
 end
 if((strcmp(key_press,'z')||strcmp(key_press,'Z'))&&flag_2)
-    popStack(stack);
-    cur = popStack(stack);
-    while(~ismpty(cur))
-     
-
-        h1 = plot(c(1, :), c(2, :), '-r');
+    handle_fig = figure(1);
+    close(handle_fig);
+    filename = strcat('frame',num2str(frames_num),'.jpg');
+    I=imread(fullfile(frames_path,filename));
+    
+    SeperateView(I);
+     pushData();
+    figure(1);
+    flag =1;
+    
+    [stack,p] = popStack(stack);
+    tmp = stack;
+    len = size(stack,2)
+    for i = 1:len
+    [tmp,points] = popStack(tmp);
+    
+     paint(points);
+    
     end
     
 end
 if((strcmp(key_press,'s')||strcmp(key_press,'S'))&&flag_2)
-    stack = pushStack(pts,stack);
+   
+    stack = pushStack({pts},stack);
     flag=1;
     counter = counter + 1;
     leg_counter=leg_counter+1;
@@ -449,7 +526,8 @@ global flag;
 global flag_;
 global flag_2;
 global frames_num;
-
+global stack;
+stack = {};
 leg_counter =0;
 frames_num =1;
 counter =0;
