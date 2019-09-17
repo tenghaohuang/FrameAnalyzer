@@ -209,10 +209,12 @@ hold on;
     %axis([0 1 0 1]);
     plot(c(1, :), c(2, :), '-r');
  
-function pushData()
+function changeData(points)
 global counter;
 global leg_counter;
 global data;
+global pts;
+global frames_num;
  if(counter ==0)
         return;
     end
@@ -221,17 +223,17 @@ counter = counter - 1;
     h = findall(0,'tag','leg_numbox');
     set(h,'String',num2str(leg_counter));
     
-    for i = 1:size(data(counter,:),2)
-        data(counter,1) = 0;
-        data(counter,2 )= 0;
-        data(counter,i+2) =0;
+    for i = 1:size(pts,2)
+        data(counter,1) = frames_num;
+        data(counter,2 )= leg_counter;
+        data(counter,i+2) =points(1,i);
     end
     
     counter = counter+1;
-    for i = 1:size(data(counter,:),2)
-        data(counter,1) = 0;
-        data(counter,2 )= 0;
-        data(counter,i+2) =0;
+    for i = 1:size(pts,2)
+        data(counter,1) = frames_num;
+        data(counter,2 )= leg_counter;
+        data(counter,i+2) =points(2,i);
     end
     
     handles_uitable  = findall(0,'tag','uitable1');
@@ -279,7 +281,8 @@ if((strcmp(key_press,'z')||strcmp(key_press,'Z'))&&flag_2)
     I=imread(fullfile(frames_path,filename));
     
     SeperateView(I);
-     pushData();
+    ling =zeros(2,size(pts,2));
+    changeData(ling);
     figure(1);
     flag =1;
     
@@ -290,7 +293,7 @@ if((strcmp(key_press,'z')||strcmp(key_press,'Z'))&&flag_2)
     [tmp,points] = popStack(tmp);
     
      paint(points);
-    
+        
     end
     
 end
@@ -323,7 +326,7 @@ end
     
 
 if((strcmp(key_press,'d')||strcmp(key_press,'D'))&&flag_2)
-    
+    stack = {};
     handle_fig = figure(1);
     close(handle_fig);
     frames_num = frames_num +1;
@@ -340,6 +343,7 @@ if((strcmp(key_press,'d')||strcmp(key_press,'D'))&&flag_2)
 end
 
 if ((strcmp(key_press,'a')||strcmp(key_press,'A'))&&flag_2)
+    stack={};
     if(frames_num==1)
         msgbox("No previous frame");
         return
@@ -385,6 +389,7 @@ if((strcmp(key_press,'r')||strcmp(key_press,'R'))&&flag_2)
     % Iterate over curve and apply deCasteljau
     numOfPts = length(x);
     pts = [x; y];
+    
     for i = 1: numOfU
         ui = u(i);
         c(:, i) = deCasteljau(ui, pts, numOfPts, numOfPts);
@@ -420,6 +425,9 @@ if((strcmp(key_press,'e')||strcmp(key_press,'E'))&&flag_2)
     % Iterate over curve and apply deCasteljau
     numOfPts = length(x);
     pts = [x; y];
+    changeData(pts);
+    [stack,n] = popStack(stack);
+    stack = pushStack({pts},stack);
     for i = 1: numOfU
         ui = u(i);
         c(:, i) = deCasteljau(ui, pts, numOfPts, numOfPts);
@@ -427,7 +435,7 @@ if((strcmp(key_press,'e')||strcmp(key_press,'E'))&&flag_2)
 
     h1 = plot(c(1, :), c(2, :), '-r');
     end
-    
+   
  
 end
 
