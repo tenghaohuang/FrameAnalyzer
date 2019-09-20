@@ -425,9 +425,7 @@ if((strcmp(key_press,'e')||strcmp(key_press,'E'))&&flag_2)
     % Iterate over curve and apply deCasteljau
     numOfPts = length(x);
     pts = [x; y];
-    changeData(pts);
-    [stack,n] = popStack(stack);
-    stack = pushStack({pts},stack);
+
     for i = 1: numOfU
         ui = u(i);
         c(:, i) = deCasteljau(ui, pts, numOfPts, numOfPts);
