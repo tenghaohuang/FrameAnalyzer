@@ -557,3 +557,52 @@ SeperateView(I);
 flag =1; % for curve
 flag_ =0; % for save
 flag_2 = 1;
+
+
+% --- Executes on button press in Add_Point.
+function Add_Point_Callback(hObject, eventdata, handles)
+% hObject    handle to Add_Point (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton8.
+function pushbutton8_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Delete_Point.
+function Delete_Point_Callback(hObject, eventdata, handles)
+% hObject    handle to Delete_Point (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Delete_Edge.
+function Delete_Edge_Callback(hObject, eventdata, handles)
+% hObject    handle to Delete_Edge (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Start_Over.
+function Start_Over_Callback(hObject, eventdata, handles)
+% hObject    handle to Start_Over (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Save_Curve.
+function Save_Curve_Callback(hObject, eventdata, handles)
+% hObject    handle to Save_Curve (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Data_Window.
+function Data_Window_Callback(hObject, eventdata, handles)
+% hObject    handle to Data_Window (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
